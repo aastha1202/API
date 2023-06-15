@@ -10,6 +10,7 @@ const dayjs=require("dayjs")
 const corsOptions = {
   origin: 'https://todo-phi-jade.vercel.app',
 };
+app.use(bodyParser.json());
 
 app.use(cors({
   origin: '*',
@@ -90,7 +91,7 @@ app.use("/", router);
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3000;
+  port = 9000;
 }
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
