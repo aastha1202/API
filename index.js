@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const Todo= require("./todo")
 const cors= require("cors")
 const dayjs=require("dayjs")
+const { DateTime } = require('luxon');
+
 
 const corsOptions = {
   origin: 'https://todo-phi-jade.vercel.app',
@@ -54,25 +56,44 @@ router.post("/todo", async (req, res) => {
     }
   });
   
+ 
 
-
-router.get("/todo", async (req, res) => {
-  try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
-
-    const todos = await Todo.find({
+  router.get("/todo", async (req, res) => {
+    try {
+      const today = DateTime.local().setZone('Asia/Kolkata').startOf('day');
+  
+      const todos = await Todo.find({
         date: {
-            $gte: today,
-            $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Set the upper bound to the next day
+          $gte: today.toJSDate(),
+          $lt: today.plus({ days: 1 }).toJSDate()
         }
-    });
+      });
+  
+      res.send(todos);
+    } catch (err) {
+      res.send(err);
+    }
+  });
+  
+  
 
-    res.send(todos);
-} catch (err) {
-    res.send(err);
-}
-});
+// router.get("/todo", async (req, res) => {
+//   try {
+//     const today = new Date();
+//     today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+
+//     const todos = await Todo.find({
+//         date: {
+//             $gte: today,
+//             $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Set the upper bound to the next day
+//         }
+//     });
+
+//     res.send(todos);
+// } catch (err) {
+//     res.send(err);
+// }
+// });
 
 router.get("/todo/user", async (req, res) => {
   try {
