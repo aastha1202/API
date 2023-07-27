@@ -99,6 +99,22 @@ router.post("/todo", async (req, res) => {
     }
   });
   
+  router.delete('/todo', async (req, res) => {
+    try {
+      const today = DateTime.local().setZone('Asia/Kolkata').startOf('day');
+    
+      const result = await Todo.deleteMany({
+        date: {
+          $gte: today.toJSDate(),
+          $lt: today.plus({ days: 1 }).toJSDate()
+        }
+      });
+    
+      res.sendStatus(200); // Send a success status code
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  });
   
 
 // router.get("/todo", async (req, res) => {
