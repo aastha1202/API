@@ -62,19 +62,7 @@ router.post("/todo", async (req, res) => {
 
  router.get("/todo", async (req, res) => {
   try {
-    const todayStart = DateTime.local().setZone('GMT').startOf('day')
-    const tomorrowStart = todayStart.plus({ days: 1 }).startOf('day');
-
-    console.log(todayStart.toJSDate());
-    console.log(tomorrowStart.toJSDate());
-
-    const todos = await Todo.find({
-      date: {
-        $gte: todayStart.toJSDate(),
-        $lt: tomorrowStart.toJSDate()
-      }
-    });
-
+    const todos = await Todo.find();
     res.send(todos);
   } catch (err) {
     res.send(err);
@@ -84,37 +72,14 @@ router.post("/todo", async (req, res) => {
 
   router.delete('/todo', async (req, res) => {
     try {
-      const today = DateTime.local().setZone('GMT').startOf('day');
-    
-      const result = await Todo.deleteMany({
-        date: {
-          $gte: today.toJSDate(),
-          $lt: today.plus({ days: 1 }).toJSDate()
-        }
-      });
-    
+      const result = await Todo.deleteMany({});
       res.sendStatus(200); // Send a success status code
     } catch (err) {
       res.status(500).send(err);
     }
   });
   
-  router.delete('/todo', async (req, res) => {
-    try {
-      const today = DateTime.local().setZone('Asia/Kolkata').startOf('day');
-    
-      const result = await Todo.deleteMany({
-        date: {
-          $gte: today.toJSDate(),
-          $lt: today.plus({ days: 1 }).toJSDate()
-        }
-      });
-    
-      res.sendStatus(200); // Send a success status code
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  });
+
   
 
 // router.get("/todo", async (req, res) => {
