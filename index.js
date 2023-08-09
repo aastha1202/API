@@ -36,8 +36,8 @@ router.post("/todo", async (req, res) => {
     try {
       const savePromises = tasks.map(async (task) => {
         console.log(task.date)
-        // const formattedDate = dayjs(task.date, 'ddd MMM DD YYYY').format('YYYY-MM-DD');
-        const formattedDate =DateTime.fromISO(task.date).setZone('America/New_York').toISODate();;
+        const formattedDate = dayjs(task.date, 'ddd MMM DD YYYY').format('YYYY-MM-DD');
+        // const formattedDate =DateTime.fromISO(task.date).setZone('America/New_York').toISODate();;
 
         // const options = {
         //   weekday: 'long',
