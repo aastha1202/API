@@ -71,9 +71,9 @@ router.post("/todo", async (req, res) => {
     });
 
     
-    // const deleteResult = await Todo.deleteMany({
-    //     date: { $ne: today }
-    // });
+    const deleteResult = await Todo.deleteMany({
+        date: { $ne: today }
+    });
 
     res.send(matchingTasks);
 } catch (err) {
