@@ -63,6 +63,7 @@ router.post("/todo", async (req, res) => {
  router.get("/todo", async (req, res) => {
   try {
     const today = DateTime.now().setZone("America/New_York").startOf('day').toISODate();
+
     
     // Find tasks with matching time and date
     const matchingTasks = await Todo.find({
@@ -70,9 +71,9 @@ router.post("/todo", async (req, res) => {
     });
 
     
-    const deleteResult = await Todo.deleteMany({
-        date: { $ne: today }
-    });
+    // const deleteResult = await Todo.deleteMany({
+    //     date: { $ne: today }
+    // });
 
     res.send(matchingTasks);
 } catch (err) {
