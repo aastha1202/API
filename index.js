@@ -37,7 +37,7 @@ router.post("/todo", async (req, res) => {
       const savePromises = tasks.map(async (task) => {
         console.log(task.date)
         // const formattedDate = dayjs(task.date, 'ddd MMM DD YYYY').format('YYYY-MM-DD');
-        const formattedDate =DateTime.fromISO(task.date).setZone(userTimezone).toISODate();;
+        const formattedDate =DateTime.fromISO(task.date).setZone('America/New_York').toISODate();;
 
         // const options = {
         //   weekday: 'long',
@@ -62,11 +62,22 @@ router.post("/todo", async (req, res) => {
 
  router.get("/todo", async (req, res) => {
   try {
-    const todos = await Todo.find();
-    res.send(todos);
-  } catch (err) {
-    res.send(err);
-  }
+    const today = DateTime.now().setZone("America/New_York").startOf('day').toISODate();
+    
+    // Find tasks with matching time and date
+    const matchingTasks = await Todo.find({
+        date: today,
+    });
+
+    
+    const deleteResult = await Todo.deleteMany({
+        date: { $ne: today }
+    });
+
+    res.send(matchingTasks);
+} catch (err) {
+    res.status(500).send(err);
+}
 });
 
 
